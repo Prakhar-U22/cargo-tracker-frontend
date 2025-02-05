@@ -11,7 +11,7 @@ const defaultCenter = { lat: 51.505, lng: -0.09 }; // Default location
 const ShipmentMap = ({ currentLocation }) => {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-    libraries: ['places'], // Enables Places API for search
+    libraries: ['places'], // Enables Places API for searchF
   });
 
   const [selectedLocation, setSelectedLocation] = useState(defaultCenter);

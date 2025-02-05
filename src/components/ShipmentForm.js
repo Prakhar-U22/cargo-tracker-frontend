@@ -19,7 +19,9 @@ const ShipmentForm = ({ onShipmentAdded }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://cargo-tracker-backend-qjit.onrender.com/shipments", {
+      // "https://cargo-tracker-backend-qjit.onrender.com/shipments"
+      // const response = await fetch('/api/shipments', {
+        const response = await fetch('https://cargo-tracker-backend-qjit.onrender.com/api/shipment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

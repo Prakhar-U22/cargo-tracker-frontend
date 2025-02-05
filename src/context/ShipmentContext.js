@@ -13,7 +13,8 @@ export const ShipmentProvider = ({ children }) => {
     const fetchShipments = async () => {
         setLoading(true);
         try {
-            const response = await axios.get('/api/shipments');
+            // const response = await axios.get('/api/shipments');
+            const response = await axios.get('https://cargo-tracker-backend-qjit.onrender.com/api/shipments');
             setShipments(response.data);
         } catch (err) {
             setError(err.message);
@@ -26,7 +27,8 @@ export const ShipmentProvider = ({ children }) => {
     const fetchShipmentById = async (id) => {
         setLoading(true);
         try {
-            const response = await axios.get(`/api/shipment/${id}`);
+            const response = await axios.post(`https://cargo-tracker-backend-qjit.onrender.com/api/shipment/${id}`);
+            // const response = await axios.get(`/api/shipment/${id}`);
             setSelectedShipment(response.data);
         } catch (err) {
             setError(err.message);
@@ -39,7 +41,8 @@ export const ShipmentProvider = ({ children }) => {
     const updateShipmentLocation = async (id, currentLocation) => {
         setLoading(true);
         try {
-            const response = await axios.post(`/api/shipment/${id}/update-location`, { currentLocation });
+            // const response = await axios.post(`/api/shipment/${id}/update-location`, { currentLocation });
+            const response = await axios.post(`https://cargo-tracker-backend-qjit.onrender.com/api/shipment/${id}/update-location`, { currentLocation });
             setSelectedShipment(response.data);
             fetchShipments(); // Refresh the list
         } catch (err) {
@@ -53,7 +56,8 @@ export const ShipmentProvider = ({ children }) => {
     const createShipment = async (shipmentData) => {
         setLoading(true);
         try {
-            const response = await axios.post('/api/shipment', shipmentData);
+            const response = await axios.post('https://cargo-tracker-backend-qjit.onrender.com/api/shipments', shipmentData);
+            // const response = await axios.post('/api/shipment', shipmentData);
             setShipments([...shipments, response.data]);
         } catch (err) {
             setError(err.message);
