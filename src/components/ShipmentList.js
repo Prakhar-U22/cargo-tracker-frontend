@@ -8,7 +8,7 @@ const ShipmentList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('/api/shipments')
+    fetch("https://cargo-tracker-backend-qjit.onrender.com/shipments")
       .then(response => response.json())
       .then(data => {
         setShipments(data);
