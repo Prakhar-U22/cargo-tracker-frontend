@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client'; // Import createRoot from react-dom/client
 import { ShipmentProvider } from './context/ShipmentContext';
 import { BrowserRouter } from 'react-router-dom';

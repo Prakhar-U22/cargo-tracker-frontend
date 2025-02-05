@@ -8,12 +8,8 @@ const ShipmentList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-<<<<<<< HEAD
     // fetch('/api/shipments')
     fetch('https://cargo-tracker-backend-qjit.onrender.com/api/shipments')
-=======
-    fetch("https://cargo-tracker-backend-qjit.onrender.com/shipments")
->>>>>>> 484f10d7a463f82f9ad931ed575a6f47821889b2
       .then(response => response.json())
       .then(data => {
         setShipments(data);

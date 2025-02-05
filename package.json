@@ -1,7 +1,6 @@
 {
   "name": "cargo-tracker-frontend",
   "version": "1.0.0",
-  "proxy": "http://localhost:5000",
   "private": true,
   "dependencies": {
     "@react-google-maps/api": "^2.20.5",
