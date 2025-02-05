@@ -3,21 +3,28 @@ import { useNavigate } from 'react-router-dom';
 
 const ShipmentList = () => {
   const [shipments, setShipments] = useState([]);
-  const navigate = useNavigate(); // Hook for navigation
+  const [backendLoading, setBackendLoading] = useState(true);
+  const [backendError, setBackendError] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch('/api/shipments')
       .then(response => response.json())
-      .then(data => setShipments(data))
-      .catch(error => console.error('Error fetching shipments:', error));
+      .then(data => {
+        setShipments(data);
+        setBackendLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching shipments:', error);
+        setBackendError(true);
+        setBackendLoading(false);
+        navigate('/backend-error'); // Navigate to error page
+      });
   }, []);
 
-  // Function to handle location click
-  const handleLocationClick = (location) => {
-    if (location) {
-      navigate(`/map?location=${encodeURIComponent(location)}`);
-    }
-  };
+  if (backendLoading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div>
@@ -37,14 +44,7 @@ const ShipmentList = () => {
             <tr key={shipment._id}>
               <td>{shipment.shipmentId}</td>
               <td>{shipment.containerId}</td>
-              <td>
-                <button 
-                  onClick={() => handleLocationClick(shipment.currentLocation)} 
-                  style={{ background: 'none', border: 'none', color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
-                >
-                  {shipment.currentLocation}
-                </button>
-              </td>
+              <td>{shipment.currentLocation}</td>
               <td>{shipment.status}</td>
               <td>{new Date(shipment.eta).toLocaleString()}</td>
             </tr>

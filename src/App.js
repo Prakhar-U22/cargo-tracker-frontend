@@ -11,7 +11,7 @@ const App = () => {
     // <Router>
       <div>
         <h1>Cargo Shipment Tracker</h1>
-            <ShipmentForm />
+        <ShipmentForm onShipmentAdded={() => console.log('Shipment added!')} />
             <ShipmentMap />
             <ShipmentList />
         {/* <Routes> */}
