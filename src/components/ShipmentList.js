@@ -8,9 +8,13 @@ const ShipmentList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // fetch('/api/shipments')
-    fetch('https://cargo-tracker-backend-qjit.onrender.com/api/shipments')
-      .then(response => response.json())
+    fetch('https://cargo-tracker-backend-qjit.onrender.com/api/shipments'|| 'https://localhost:5001/api/shipments')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then(data => {
         setShipments(data);
         setBackendLoading(false);
@@ -19,9 +23,10 @@ const ShipmentList = () => {
         console.error('Error fetching shipments:', error);
         setBackendError(true);
         setBackendLoading(false);
-        navigate('/backend-error'); // Navigate to error page
+        navigate('/backend-error'); 
       });
   }, []);
+  
 
   if (backendLoading) {
     return <p>Loading...</p>;

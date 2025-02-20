@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+
 const ShipmentForm = ({ onShipmentAdded }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -21,7 +22,7 @@ const ShipmentForm = ({ onShipmentAdded }) => {
     try {
       // "https://cargo-tracker-backend-qjit.onrender.com/shipments"
       // const response = await fetch('/api/shipments', {
-        const response = await fetch('https://cargo-tracker-backend-qjit.onrender.com/api/shipment', {
+        const response = await fetch('https://cargo-tracker-backend-qjit.onrender.com/api/shipments' || 'https://localhost:5001/api/shipments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
