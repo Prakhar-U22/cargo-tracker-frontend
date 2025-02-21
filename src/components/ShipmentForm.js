@@ -22,7 +22,7 @@ const ShipmentForm = ({ onShipmentAdded }) => {
     try {
       // "https://cargo-tracker-backend-qjit.onrender.com/shipments"
       // const response = await fetch('/api/shipments', {
-        const response = await fetch('https://cargo-tracker-backend-qjit.onrender.com/api/shipments' || 'https://localhost:5001/api/shipments', {
+        const response = await fetch('https://cargo-tracker-backend-qjit.onrender.com/api/shipment' || 'http://localhost:5001/api/shipment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

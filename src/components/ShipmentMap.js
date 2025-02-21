@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { GoogleMap, Marker, useLoadScript, Autocomplete } from '@react-google-maps/api';
+import React, { useState, useEffect, useCallback } from 'react';
+import { GoogleMap, useJsApiLoader, Autocomplete } from '@react-google-maps/api';
 
 const mapContainerStyle = {
   width: '100%',
@@ -8,26 +8,31 @@ const mapContainerStyle = {
 
 const defaultCenter = { lat: 51.505, lng: -0.09 }; // Default location
 
+// Moved outside component to avoid performance warning
+const libraries = ['places'];
+
 const ShipmentMap = ({ currentLocation }) => {
-  const { isLoaded, loadError } = useLoadScript({
+  // Load Google Maps Script
+  const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-    libraries: ['places'], // Enables Places API for searchF
+    libraries: libraries,
   });
 
   const [selectedLocation, setSelectedLocation] = useState(defaultCenter);
   const [autocomplete, setAutocomplete] = useState(null);
 
   // Convert currentLocation (string) to coordinates
-  const coordinates = currentLocation
-    ? currentLocation.split(',').map(Number)
-    : null;
+  useEffect(() => {
+    if (currentLocation) {
+      const coordinates = currentLocation.split(',').map(Number);
+      if (coordinates.length === 2) {
+        setSelectedLocation({ lat: coordinates[0], lng: coordinates[1] });
+      }
+    }
+  }, [currentLocation]);
 
-  // Set center to currentLocation if available
-  const center = coordinates
-    ? { lat: coordinates[0], lng: coordinates[1] }
-    : selectedLocation;
-
-  const onPlaceChanged = () => {
+  // Handle place selection from Autocomplete
+  const onPlaceChanged = useCallback(() => {
     if (autocomplete !== null) {
       const place = autocomplete.getPlace();
       if (place.geometry) {
@@ -37,18 +42,24 @@ const ShipmentMap = ({ currentLocation }) => {
         });
       }
     }
-  };
+  }, [autocomplete]);
+
+  // Handle loading of Autocomplete instance
+  const onAutocompleteLoad = useCallback((autocompleteInstance) => {
+    setAutocomplete(autocompleteInstance);
+  }, []);
 
   if (loadError) {
     console.error('Google Maps Load Error:', loadError);
     return <div>Error loading maps. Check console for details.</div>;
   }
+
   if (!isLoaded) return <div>Loading Maps...</div>;
 
   return (
     <div className="map-container">
       {/* Search Bar */}
-      <Autocomplete onLoad={setAutocomplete} onPlaceChanged={onPlaceChanged}>
+      <Autocomplete onLoad={onAutocompleteLoad} onPlaceChanged={onPlaceChanged}>
         <input
           type="text"
           placeholder="Search a location..."
@@ -63,8 +74,29 @@ const ShipmentMap = ({ currentLocation }) => {
       </Autocomplete>
 
       {/* Google Map */}
-      <GoogleMap mapContainerStyle={mapContainerStyle} zoom={12} center={center}>
-        <Marker position={center} />
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
+        zoom={12}
+        center={selectedLocation}
+        options={{
+          gestureHandling: 'greedy',
+          disableDefaultUI: true,
+        }}
+      >
+        {/* Using AdvancedMarkerElement to replace Marker */}
+        <div
+          className="marker"
+          style={{
+            position: 'absolute',
+            transform: 'translate(-50%, -100%)',
+            backgroundColor: 'red',
+            width: '20px',
+            height: '20px',
+            borderRadius: '50%',
+          }}
+          lat={selectedLocation.lat}
+          lng={selectedLocation.lng}
+        />
       </GoogleMap>
     </div>
   );

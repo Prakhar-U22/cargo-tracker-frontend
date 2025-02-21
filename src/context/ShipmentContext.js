@@ -14,7 +14,7 @@ export const ShipmentProvider = ({ children }) => {
         setLoading(true);
         try {
             // const response = await axios.get('/api/shipments');
-            const response = await axios.get('https://cargo-tracker-backend-qjit.onrender.com/api/shipments');
+            const response = await axios.get('https://cargo-tracker-backend-qjit.onrender.com/api/shipments'|| 'http://localhost:5001/api/shipments');
             setShipments(response.data);
         } catch (err) {
             setError(err.message);
